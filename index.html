@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FamWish</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     AUTH LAYER
+═══════════════════════════════════════════════ -->
+<div id="auth-layer">
+
+  <!-- Screen 1: Landing -->
+  <div class="auth-screen" id="screen-landing">
+    <div class="auth-center">
+      <div class="brand">
+        <span class="brand-icon">
+  <img src="assets/image.png">
+</span>
+        <h1 class="brand-name">FamWish</h1>
+        <p class="brand-sub">Where wishes come true through effort</p>
+      </div>
+      <div class="role-cards">
+        <button class="role-card" onclick="goTo('screen-user-login')">
+          <span class="role-emoji">🧒</span>
+          <span class="role-title">I'm a Kid / Teen</span>
+          <span class="role-desc">View wishes &amp; earn rewards</span>
+        </button>
+        <button class="role-card" onclick="goTo('screen-parent-login')">
+          <span class="role-emoji">👨‍👩‍👧</span>
+          <span class="role-title">I'm a Parent</span>
+          <span class="role-desc">Manage family &amp; approve wishes</span>
+        </button>
+      </div>
+      <p class="demo-hint">Demo: use <strong>alexj / demo</strong> (kid) or <strong>parent@demo.com / demo</strong> (parent)</p>
+    </div>    
+  </div>
+
+  <!-- Screen 2: User Login -->
+  <div class="auth-screen hidden" id="screen-user-login">
+    <div class="auth-card">
+      <button class="back-btn" onclick="goTo('screen-landing')">← Back</button>
+      <div class="auth-header">
+        <span class="auth-emoji">🧒</span>
+        <h2>Kid / Teen Login</h2>
+        <p>Sign in to your FamWish account</p>
+      </div>
+      <div class="auth-form">
+        <div class="field-group">
+          <label>Username</label>
+          <input type="text" placeholder="Enter your username" id="user-login-name"/>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input type="password" placeholder="Enter your password" id="user-login-pass"/>
+        </div>
+        <button class="btn-primary full" onclick="loginAsUser()">Sign In</button>
+        <div class="auth-divider"><span>Don't have an account?</span></div>
+        <button class="btn-ghost full" onclick="goTo('screen-user-register')">Create Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: User Register -->
+  <div class="auth-screen hidden" id="screen-user-register">
+    <div class="auth-card">
+      <button class="back-btn" onclick="goTo('screen-user-login')">← Back</button>
+      <div class="auth-header">
+        <span class="auth-emoji">✨</span>
+        <h2>Create Account</h2>
+        <p>Join your family on FamWish</p>
+      </div>
+      <div class="auth-form">
+        <div class="field-group">
+          <label>Full Name</label>
+          <input type="text" id="user-reg-name" placeholder="Your name"/>
+        </div>
+        <div class="field-group">
+          <label>Username</label>
+          <input type="text" id="user-reg-username" placeholder="Choose a username"/>
+        </div>
+        <div class="field-group">
+          <label>Age</label>
+          <input type="number" id="user-reg-age" placeholder="Your age" min="5" max="17"/>
+        </div>
+        <div class="field-group">
+          <label>Family Code</label>
+          <input type="text" id="user-reg-family-code" placeholder="Enter code from parent (e.g. FAM-4821)"/>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input type="password" id="user-reg-pass" placeholder="Create a password"/>
+        </div>
+        <button class="btn-primary full" onclick="registerChild()">Create Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 4: Parent Login -->
+  <div class="auth-screen hidden" id="screen-parent-login">
+    <div class="auth-card">
+      <button class="back-btn" onclick="goTo('screen-landing')">← Back</button>
+      <div class="auth-header">
+        <span class="auth-emoji">👨‍👩‍👧</span>
+        <h2>Parent Login</h2>
+        <p>Manage your family's FamWish</p>
+      </div>
+      <div class="auth-form">
+        <div class="field-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="Enter your email" id="parent-login-email"/>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input type="password" placeholder="Enter your password" id="parent-login-pass"/>
+        </div>
+        <button class="btn-primary full" onclick="loginAsParent()">Sign In</button>
+        <div class="auth-divider"><span>New to FamWish?</span></div>
+        <button class="btn-ghost full" onclick="goTo('screen-parent-register')">Create Family Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 5: Parent Register -->
+  <div class="auth-screen hidden" id="screen-parent-register">
+    <div class="auth-card">
+      <button class="back-btn" onclick="goTo('screen-parent-login')">← Back</button>
+      <div class="auth-header">
+        <span class="auth-emoji">🏠</span>
+        <h2>Create Family Account</h2>
+        <p>Set up your family on FamWish</p>
+      </div>
+      <div class="auth-form">
+        <div class="field-group">
+          <label>Full Name</label>
+          <input type="text" id="parent-reg-name" placeholder="Parent's full name"/>
+        </div>
+        <div class="field-group">
+          <label>Email Address</label>
+          <input type="email" id="parent-reg-email" placeholder="Your email"/>
+        </div>
+        <div class="field-group">
+          <label>Family Name</label>
+          <input type="text" id="parent-reg-family" placeholder="e.g. The Johnson Family"/>
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input type="password" id="parent-reg-pass" placeholder="Create a password"/>
+        </div>
+        <div class="field-group">
+          <label>Confirm Password</label>
+          <input type="password" id="parent-reg-confirm" placeholder="Repeat your password"/>
+        </div>
+        <button class="btn-primary full" onclick="registerParent()">Create Family</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /auth-layer -->
+
+
+<!-- ═══════════════════════════════════════════════
+     APP LAYER
+═══════════════════════════════════════════════ -->
+<div id="app-layer" class="hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-icon-sm">⭐</span>
+      <span class="sidebar-brand-name">FamWish</span>
+    </div>
+
+    <nav class="sidebar-nav" id="nav-user">
+      <button class="nav-item active" data-screen="screen-home" onclick="switchScreen('screen-home', this)">
+        <span class="nav-icon">🏠</span><span>Home</span>
+      </button>
+      <button class="nav-item" data-screen="screen-wishes" onclick="switchScreen('screen-wishes', this)">
+        <span class="nav-icon">⭐</span><span>Wishes</span>
+      </button>
+      <button class="nav-item" data-screen="screen-tasks" onclick="switchScreen('screen-tasks', this)">
+        <span class="nav-icon">✅</span><span>Tasks</span>
+      </button>
+      <button class="nav-item" data-screen="screen-profile" onclick="switchScreen('screen-profile', this)">
+        <span class="nav-icon">👤</span><span>Profile</span>
+      </button>
+    </nav>
+
+    <nav class="sidebar-nav hidden" id="nav-parent">
+      <button class="nav-item active" data-screen="screen-parent-home" onclick="switchScreen('screen-parent-home', this)">
+        <span class="nav-icon">🏠</span><span>Home</span>
+      </button>
+      <button class="nav-item" data-screen="screen-parent-wishes" onclick="switchScreen('screen-parent-wishes', this)">
+        <span class="nav-icon">⭐</span><span>Wishes</span>
+      </button>
+      <button class="nav-item" data-screen="screen-parent-tasks" onclick="switchScreen('screen-parent-tasks', this)">
+        <span class="nav-icon">✅</span><span>Tasks</span>
+      </button>
+      <button class="nav-item" data-screen="screen-parent-profile" onclick="switchScreen('screen-parent-profile', this)">
+        <span class="nav-icon">👤</span><span>Profile</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-logout">
+      <button class="btn-logout" onclick="logout()">⬅ Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrapper">
+
+    <!-- TOP HEADER -->
+    <header class="top-header" id="top-header">
+      <div class="header-greeting">
+        <span id="header-greeting-text">Good morning,</span>
+        <strong id="header-user-name">Alex</strong>
+      </div>
+      <div class="header-balance">
+        <span class="balance-label">Balance</span>
+        <span class="balance-amount" id="header-balance">₹ 240</span>
+      </div>
+      <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <main class="content-area">
+
+      <!-- ─── Screen 6: User Home ─── -->
+      <div class="app-screen" id="screen-home">
+        <div class="page-header">
+          <h2 class="page-title">My Dashboard</h2>
+        </div>
+
+        <div class="summary-row">
+          <div class="summary-card accent">
+            <span class="summary-label">Balance</span>
+            <span class="summary-value" id="home-balance">₹ 0</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Active Wishes</span>
+            <span class="summary-value" id="home-active-wishes">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Tasks Done</span>
+            <span class="summary-value" id="home-tasks-done">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Pending Tasks</span>
+            <span class="summary-value" id="home-tasks-pending">0</span>
+          </div>
+        </div>
+
+        <div class="section-header"><h3>Top Wish Progress</h3></div>
+        <div id="home-top-wish"></div>
+
+        <div class="section-header">
+          <h3>Recent Tasks</h3>
+          <button class="see-all" onclick="switchScreen('screen-tasks', document.querySelector('#nav-user [data-screen=screen-tasks]'))">See All</button>
+        </div>
+        <div class="task-list" id="home-recent-tasks"></div>
+
+        <div class="section-header">
+          <h3>My Wishes</h3>
+          <button class="see-all" onclick="switchScreen('screen-wishes', document.querySelector('#nav-user [data-screen=screen-wishes]'))">See All</button>
+        </div>
+        <div class="wish-grid" id="home-wish-grid"></div>
+      </div>
+
+      <!-- ─── Screen 7: User Wishes List ─── -->
+      <div class="app-screen hidden" id="screen-wishes">
+        <div class="page-header">
+          <h2 class="page-title">My Wishes</h2>
+          <button class="btn-primary sm" onclick="showAddWish()">+ Add Wish</button>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterWishes('all', this)">All</button>
+          <button class="filter-tab" onclick="filterWishes('active', this)">Active</button>
+          <button class="filter-tab" onclick="filterWishes('pending', this)">Pending</button>
+          <button class="filter-tab" onclick="filterWishes('completed', this)">Completed</button>
+        </div>
+        <div class="wish-grid" id="wishes-grid"></div>
+      </div>
+
+      <!-- ─── Screen 8: Add Wish ─── -->
+      <div class="app-screen hidden" id="screen-add-wish">
+        <div class="page-header">
+          <button class="back-inline" onclick="switchScreen('screen-wishes', document.querySelector('#nav-user [data-screen=screen-wishes]'))">← Back</button>
+          <h2 class="page-title">Add New Wish</h2>
+        </div>
+        <div class="form-card">
+          <form id="add-wish-form" onsubmit="return false">
+            <div class="field-group">
+              <label>Wish Name</label>
+              <input type="text" id="wish-name" placeholder="What do you wish for?"/>
+            </div>
+            <div class="field-group">
+              <label>Category</label>
+              <select id="wish-category">
+                <option>Electronics</option><option>Toys &amp; Games</option>
+                <option>Sports</option><option>Books</option>
+                <option>Clothing</option><option>Other</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Target Amount (₹)</label>
+              <input type="number" id="wish-amount" placeholder="e.g. 800"/>
+            </div>
+            <div class="field-group">
+              <label>Description</label>
+              <textarea id="wish-desc" placeholder="Why do you want this?"></textarea>
+            </div>
+            <div class="field-group">
+              <label>Image / Emoji</label>
+              <div class="emoji-picker">
+                <button type="button" class="emoji-opt selected" onclick="selectEmoji(this)">🎮</button>
+                <button type="button" class="emoji-opt" onclick="selectEmoji(this)">🚲</button>
+                <button type="button" class="emoji-opt" onclick="selectEmoji(this)">🎧</button>
+                <button type="button" class="emoji-opt" onclick="selectEmoji(this)">📚</button>
+                <button type="button" class="emoji-opt" onclick="selectEmoji(this)">👟</button>
+                <button type="button" class="emoji-opt" onclick="selectEmoji(this)">🎨</button>
+                <button type="button" class="emoji-opt" onclick="selectEmoji(this)">⚽</button>
+                <button type="button" class="emoji-opt" onclick="selectEmoji(this)">🎵</button>
+              </div>
+            </div>
+            <button type="button" class="btn-primary full" onclick="submitWish()">Submit Wish</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ─── Screen 9: Wish Detail ─── -->
+      <div class="app-screen hidden" id="screen-wish-detail">
+        <div class="page-header">
+          <button class="back-inline" onclick="switchScreen('screen-wishes', document.querySelector('#nav-user [data-screen=screen-wishes]'))">← Back</button>
+          <h2 class="page-title">Wish Detail</h2>
+        </div>
+        <div class="detail-card">
+          <div class="detail-hero">
+            <span class="detail-emoji" id="wd-emoji">🎮</span>
+          </div>
+          <div class="detail-body">
+            <div class="detail-title-row">
+              <h3 id="wd-title">—</h3>
+              <span id="wd-status-wrap"></span>
+            </div>
+            <p class="detail-desc" id="wd-desc"></p>
+            <div class="detail-meta-row">
+              <div class="detail-meta">
+                <span class="meta-label">Target</span>
+                <span class="meta-value accent" id="wd-target">—</span>
+              </div>
+              <div class="detail-meta">
+                <span class="meta-label">Saved</span>
+                <span class="meta-value" id="wd-saved">—</span>
+              </div>
+              <div class="detail-meta">
+                <span class="meta-label">Remaining</span>
+                <span class="meta-value" id="wd-remaining">—</span>
+              </div>
+            </div>
+            <div class="progress-section">
+              <div class="progress-bar-wrap lg">
+                <div class="progress-bar" id="wd-bar" style="width:0%"></div>
+              </div>
+              <span class="progress-label-lg" id="wd-pct">0% Complete</span>
+            </div>
+            <div class="detail-section">
+              <h4>Progress History</h4>
+              <div class="history-list" id="wd-history"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Screen 10: User Tasks List ─── -->
+      <div class="app-screen hidden" id="screen-tasks">
+        <div class="page-header">
+          <h2 class="page-title">My Tasks</h2>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterTasks('all', this)">All</button>
+          <button class="filter-tab" onclick="filterTasks('pending', this)">Pending</button>
+          <button class="filter-tab" onclick="filterTasks('submitted', this)">Submitted</button>
+          <button class="filter-tab" onclick="filterTasks('completed', this)">Completed</button>
+        </div>
+        <div class="task-list full" id="tasks-list"></div>
+      </div>
+
+      <!-- ─── Screen 11: Task Detail ─── -->
+      <div class="app-screen hidden" id="screen-task-detail">
+        <div class="page-header">
+          <button class="back-inline" onclick="switchScreen('screen-tasks', document.querySelector('#nav-user [data-screen=screen-tasks]'))">← Back</button>
+          <h2 class="page-title">Task Detail</h2>
+        </div>
+        <div class="detail-card">
+          <div class="detail-hero task-hero">
+            <span class="detail-emoji" id="td-emoji">🌱</span>
+          </div>
+          <div class="detail-body">
+            <div class="detail-title-row">
+              <h3 id="td-title">—</h3>
+              <span id="td-status-wrap"></span>
+            </div>
+            <p class="detail-desc" id="td-desc"></p>
+            <div class="detail-meta-row">
+              <div class="detail-meta">
+                <span class="meta-label">Reward</span>
+                <span class="meta-value accent" id="td-reward">—</span>
+              </div>
+              <div class="detail-meta">
+                <span class="meta-label">Assigned By</span>
+                <span class="meta-value" id="td-assignedby">Parent</span>
+              </div>
+              <div class="detail-meta">
+                <span class="meta-label">Due</span>
+                <span class="meta-value" id="td-due">Today</span>
+              </div>
+            </div>
+            <div class="task-wish-link" id="td-wish-link">
+              <span class="twl-label">No active wish linked yet.</span>
+            </div>
+            <button class="btn-primary full" id="td-cta">Submit for Review</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Screen 12: User Profile ─── -->
+      <div class="app-screen hidden" id="screen-profile">
+        <div class="page-header">
+          <h2 class="page-title">My Profile</h2>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar">A</div>
+          <div class="profile-info">
+            <h3 id="profile-name">Alex Johnson</h3>
+            <p id="profile-family">The Johnson Family</p>
+            <span class="tag tag-active">Kid</span>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-val" id="profile-balance">₹ 0</span>
+            <span class="stat-label">Balance</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="profile-wishes-ct">0</span>
+            <span class="stat-label">Wishes</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="profile-tasks-done">0</span>
+            <span class="stat-label">Tasks Done</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-val" id="profile-earned">₹ 0</span>
+            <span class="stat-label">Total Earned</span>
+          </div>
+        </div>
+        <div class="profile-section">
+          <h4>Account Settings</h4>
+          <div class="settings-list">
+            <div class="settings-item"><span>Full Name</span><span class="settings-val" id="profile-full-name">—</span></div>
+            <div class="settings-item"><span>Username</span><span class="settings-val" id="profile-username">—</span></div>
+            <div class="settings-item"><span>Age</span><span class="settings-val" id="profile-age">—</span></div>
+            <div class="settings-item"><span>Family</span><span class="settings-val" id="profile-family-val">—</span></div>
+          </div>
+        </div>
+        <div class="profile-section">
+          <h4>Notifications</h4>
+          <div class="settings-list">
+            <div class="settings-item"><span>Task reminders</span><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div>
+            <div class="settings-item"><span>Wish progress alerts</span><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Screen 13: Parent Home ─── -->
+      <div class="app-screen hidden" id="screen-parent-home">
+        <div class="page-header">
+          <h2 class="page-title">Family Dashboard</h2>
+        </div>
+
+        <div class="summary-row">
+          <div class="summary-card accent">
+            <span class="summary-label">Total Paid Out</span>
+            <span class="summary-value" id="ph-total-paid">₹ 0</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Active Wishes</span>
+            <span class="summary-value" id="ph-active-wishes">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Pending Approvals</span>
+            <span class="summary-value" id="ph-pending-tasks">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Children</span>
+            <span class="summary-value" id="ph-children-ct">0</span>
+          </div>
+        </div>
+
+        <div class="section-header"><h3>Children</h3></div>
+        <div class="children-list" id="parent-children-list"></div>
+
+        <div class="section-header">
+          <h3>Awaiting Approval</h3>
+          <button class="see-all" onclick="switchScreen('screen-parent-tasks', document.querySelector('#nav-parent [data-screen=screen-parent-tasks]'))">See All</button>
+        </div>
+        <div class="approval-list" id="parent-approval-list"></div>
+      </div>
+
+      <!-- ─── Screen 14: Parent Wishes ─── -->
+      <div class="app-screen hidden" id="screen-parent-wishes">
+        <div class="page-header">
+          <h2 class="page-title">Family Wishes</h2>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterParentWishes('all', this)">All</button>
+          <button class="filter-tab" onclick="filterParentWishes('pending', this)">Pending Approval</button>
+          <button class="filter-tab" onclick="filterParentWishes('active', this)">Active</button>
+          <button class="filter-tab" onclick="filterParentWishes('completed', this)">Completed</button>
+        </div>
+        <div class="wish-grid" id="parent-wishes-grid"></div>
+      </div>
+
+      <!-- ─── Screen 15: Parent Tasks ─── -->
+      <div class="app-screen hidden" id="screen-parent-tasks">
+        <div class="page-header">
+          <h2 class="page-title">Family Tasks</h2>
+          <button class="btn-primary sm" onclick="showAddTask()">+ Add Task</button>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterParentTasks('all', this)">All</button>
+          <button class="filter-tab" onclick="filterParentTasks('pending', this)">Pending</button>
+          <button class="filter-tab" onclick="filterParentTasks('submitted', this)">Submitted</button>
+          <button class="filter-tab" onclick="filterParentTasks('approved', this)">Approved</button>
+        </div>
+        <div class="task-list full" id="parent-tasks-list"></div>
+      </div>
+
+      <!-- ─── Screen 15b: Add Task ─── -->
+      <div class="app-screen hidden" id="screen-add-task">
+        <div class="page-header">
+          <button class="back-inline" onclick="switchScreen('screen-parent-tasks', document.querySelector('#nav-parent [data-screen=screen-parent-tasks]'))">← Back</button>
+          <h2 class="page-title">Add New Task</h2>
+        </div>
+        <div class="form-card">
+          <form id="add-task-form" onsubmit="return false">
+            <div class="field-group">
+              <label>Task Name</label>
+              <input type="text" id="task-name" placeholder="What should they do?"/>
+            </div>
+            <div class="field-group">
+              <label>Assign To</label>
+              <select id="task-assign-to"></select>
+            </div>
+            <div class="field-group">
+              <label>Reward Amount (₹)</label>
+              <input type="number" id="task-reward" placeholder="e.g. 30"/>
+            </div>
+            <div class="field-group">
+              <label>Due Date</label>
+              <input type="date" id="task-due"/>
+            </div>
+            <div class="field-group">
+              <label>Description</label>
+              <textarea id="task-desc" placeholder="Describe the task in detail..."></textarea>
+            </div>
+            <button type="button" class="btn-primary full" onclick="submitNewTask()">Add Task</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ─── Screen 16: Parent Profile ─── -->
+      <div class="app-screen hidden" id="screen-parent-profile">
+        <div class="page-header">
+          <h2 class="page-title">Parent Profile</h2>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar parent-avatar">J</div>
+          <div class="profile-info">
+            <h3 id="pp-name">—</h3>
+            <p id="pp-family">—</p>
+            <span class="tag tag-parent">Parent</span>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><span class="stat-val" id="pp-children-ct">0</span><span class="stat-label">Children</span></div>
+          <div class="stat-card"><span class="stat-val" id="pp-total-paid">₹ 0</span><span class="stat-label">Total Paid</span></div>
+          <div class="stat-card"><span class="stat-val" id="pp-tasks-ct">0</span><span class="stat-label">Tasks Created</span></div>
+          <div class="stat-card"><span class="stat-val" id="pp-wishes-appr">0</span><span class="stat-label">Wishes Approved</span></div>
+        </div>
+        <div class="profile-section">
+          <h4>Family Settings</h4>
+          <div class="settings-list">
+            <div class="settings-item"><span>Family Name</span><span class="settings-val" id="pp-family-name">—</span></div>
+            <div class="settings-item"><span>Family Code</span><span class="settings-val family-code" id="pp-family-code">—</span></div>
+            <div class="settings-item"><span>Email</span><span class="settings-val" id="pp-email">—</span></div>
+          </div>
+        </div>
+        <div class="profile-section">
+          <h4>Notification Settings</h4>
+          <div class="settings-list">
+            <div class="settings-item"><span>Task completion alerts</span><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div>
+            <div class="settings-item"><span>Wish requests</span><label class="toggle"><input type="checkbox" checked/><span class="toggle-slider"></span></label></div>
+            <div class="settings-item"><span>Weekly family report</span><label class="toggle"><input type="checkbox"/><span class="toggle-slider"></span></label></div>
+          </div>
+        </div>
+      </div>
+
+    </main><!-- /content-area -->
+
+    <!-- Mobile Bottom Nav (User) -->
+    <nav class="mobile-bottom-nav" id="mobile-nav-user">
+      <button class="mobile-nav-item active" onclick="switchMobile('screen-home', this, false)">
+        <span>🏠</span><span>Home</span>
+      </button>
+      <button class="mobile-nav-item" onclick="switchMobile('screen-wishes', this, false)">
+        <span>⭐</span><span>Wishes</span>
+      </button>
+      <button class="mobile-nav-item" onclick="switchMobile('screen-tasks', this, false)">
+        <span>✅</span><span>Tasks</span>
+      </button>
+      <button class="mobile-nav-item" onclick="switchMobile('screen-profile', this, false)">
+        <span>👤</span><span>Profile</span>
+      </button>
+    </nav>
+
+    <!-- Mobile Bottom Nav (Parent) -->
+    <nav class="mobile-bottom-nav hidden" id="mobile-nav-parent">
+      <button class="mobile-nav-item active" onclick="switchMobile('screen-parent-home', this, true)">
+        <span>🏠</span><span>Home</span>
+      </button>
+      <button class="mobile-nav-item" onclick="switchMobile('screen-parent-wishes', this, true)">
+        <span>⭐</span><span>Wishes</span>
+      </button>
+      <button class="mobile-nav-item" onclick="switchMobile('screen-parent-tasks', this, true)">
+        <span>✅</span><span>Tasks</span>
+      </button>
+      <button class="mobile-nav-item" onclick="switchMobile('screen-parent-profile', this, true)">
+        <span>👤</span><span>Profile</span>
+      </button>
+    </nav>
+
+  </div><!-- /main-wrapper -->
+</div><!-- /app-layer -->
+
+<script src="script.js"></script>
+</body>
+</html>
